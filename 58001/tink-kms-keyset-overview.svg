@@ -1,0 +1,224 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 1170" width="1400" height="1170" font-family="'Hiragino Sans','Hiragino Kaku Gothic ProN','Noto Sans JP','Noto Sans CJK JP','Yu Gothic','Meiryo',sans-serif">
+<defs>
+<marker id="arw" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#334155"/></marker>
+<marker id="arwG" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#188038"/></marker>
+<marker id="arwB" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#1a73e8"/></marker>
+<marker id="arwO" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b45309"/></marker>
+</defs>
+<rect x="0" y="0" width="1400" height="1170" rx="0" fill="#ffffff" stroke="none" stroke-width="0"/>
+<text x="30" y="46" font-size="24" fill="#0f172a" font-weight="700">Tink × Cloud KMS：キーセットを KMS で暗号化して保存する方式によるクライアントサイド暗号化</text>
+<text x="30" y="74" font-size="13.5" fill="#64748b">DEK（データ暗号鍵）を Tink の「キーセット」に束ね、キーセットだけを Cloud KMS の KEK（鍵暗号鍵）で暗号化して保存する。データの暗号化・復号はアプリ内で完結。</text>
+<rect x="30" y="96" width="6" height="22" rx="2" fill="#1a73e8"/>
+<text x="46" y="114" font-size="19" fill="#0f172a" font-weight="700">全体構成</text>
+<rect x="30" y="130" width="310" height="205" rx="14" fill="#e6f4ea" stroke="#188038" stroke-width="2"/>
+<text x="48" y="160" font-size="16" fill="#0d652d" font-weight="700">Google Cloud KMS</text>
+<text x="48" y="180" font-size="12" fill="#137333">KEK は KMS の外に出ない</text>
+<rect x="48" y="192" width="274" height="76" rx="8" fill="#ffffff" stroke="#188038" stroke-width="1.5"/>
+<text x="62" y="214" font-size="14" fill="#0f172a" font-weight="700">KEK（鍵暗号鍵）</text>
+<rect x="62" y="226" width="78" height="28" rx="5" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1.5"/>
+<text x="101" y="245" font-size="12" fill="#64748b" font-weight="700" text-anchor="middle">v1</text>
+<line x1="142" y1="240" x2="172" y2="240" stroke="#188038" stroke-width="2" marker-end="url(#arwG)"/>
+<rect x="176" y="226" width="132" height="28" rx="5" fill="#dcfce7" stroke="#16a34a" stroke-width="2"/>
+<text x="242" y="245" font-size="12" fill="#15803d" font-weight="700" text-anchor="middle">v2（主バージョン）</text>
+<rect x="48" y="280" width="132" height="40" rx="8" fill="#ffffff" stroke="#188038" stroke-width="1.5"/>
+<text x="114" y="296" font-size="12.5" fill="#0d652d" font-weight="700" text-anchor="middle">IAM</text>
+<text x="114" y="312" font-size="10" fill="#475569" text-anchor="middle">Decrypt は本番SAのみ</text>
+<rect x="190" y="280" width="132" height="40" rx="8" fill="#ffffff" stroke="#188038" stroke-width="1.5"/>
+<text x="256" y="296" font-size="12.5" fill="#0d652d" font-weight="700" text-anchor="middle">監査ログ</text>
+<text x="256" y="312" font-size="10" fill="#475569" text-anchor="middle">キーセット復号を記録</text>
+<rect x="30" y="355" width="310" height="135" rx="14" fill="#fffbeb" stroke="#b45309" stroke-width="2"/>
+<text x="48" y="384" font-size="15" fill="#92400e" font-weight="700">暗号化キーセットの保存先</text>
+<text x="48" y="403" font-size="11.5" fill="#92400e">Secret Manager / Cloud Storage / DB など</text>
+<rect x="48" y="415" width="274" height="60" rx="8" fill="#ffffff" stroke="#b45309" stroke-width="1.5"/>
+<text x="185" y="439" font-size="13.5" fill="#78350f" font-weight="700" text-anchor="middle">暗号化キーセット</text>
+<text x="185" y="460" font-size="11" fill="#78350f" text-anchor="middle">KEK v2 で暗号化済み・バックアップ必須</text>
+<rect x="440" y="130" width="500" height="360" rx="14" fill="#f8fafc" stroke="#475569" stroke-width="2" stroke-dasharray="8 5"/>
+<text x="460" y="160" font-size="16" fill="#1e293b" font-weight="700">アプリケーション（Tink を組み込み）</text>
+<text x="460" y="180" font-size="12" fill="#64748b">Cloud Run / GKE / Compute Engine など</text>
+<rect x="460" y="192" width="460" height="128" rx="10" fill="#e8f0fe" stroke="#1a73e8" stroke-width="2"/>
+<text x="476" y="214" font-size="14" fill="#174ea6" font-weight="700">メモリ上の平文キーセット（DEK の束）</text>
+<text x="476" y="232" font-size="11" fill="#174ea6">平文で存在するのはアプリのメモリ上だけ</text>
+<rect x="476" y="244" width="136" height="30" rx="5" fill="#e2e8f0" stroke="#64748b" stroke-width="1.2"/>
+<text x="486" y="263.5" font-size="12" fill="#334155" font-weight="700">鍵A</text>
+<text x="544" y="292" font-size="10" fill="#475569" text-anchor="middle">ID 0x3f1a… / ENABLED</text>
+<text x="544" y="308" font-size="10.5" fill="#475569" font-weight="700" text-anchor="middle">復号用</text>
+<rect x="624" y="244" width="136" height="30" rx="5" fill="#dbeafe" stroke="#3b82f6" stroke-width="1.2"/>
+<text x="634" y="263.5" font-size="12" fill="#1e3a8a" font-weight="700">鍵B</text>
+<text x="692" y="292" font-size="10" fill="#475569" text-anchor="middle">ID 0x7c22… / ENABLED</text>
+<text x="692" y="308" font-size="10.5" fill="#475569" font-weight="700" text-anchor="middle">復号用</text>
+<rect x="772" y="244" width="136" height="30" rx="5" fill="#fef3c7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="782" y="263.5" font-size="12" fill="#15803d" font-weight="700">鍵C　★主鍵</text>
+<text x="840" y="292" font-size="10" fill="#475569" text-anchor="middle">ID 0xa905… / ENABLED</text>
+<text x="840" y="308" font-size="10.5" fill="#15803d" font-weight="700" text-anchor="middle">暗号化用</text>
+<rect x="460" y="340" width="222" height="130" rx="8" fill="#ffffff" stroke="#1a73e8" stroke-width="1.5"/>
+<text x="476" y="364" font-size="14" fill="#0f172a" font-weight="700">書き込み時</text>
+<text x="476" y="386" font-size="12" fill="#334155">主鍵（鍵C）で暗号化</text>
+<text x="476" y="404" font-size="11" fill="#475569">AES-256-GCM / AAD にレコードID</text>
+<text x="476" y="422" font-size="11" fill="#475569">暗号文の先頭に鍵IDを付与</text>
+<rect x="476" y="436" width="190" height="24" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5"/>
+<text x="571" y="452" font-size="11.5" fill="#15803d" font-weight="700" text-anchor="middle">KMS 呼び出しなし</text>
+<rect x="698" y="340" width="222" height="130" rx="8" fill="#ffffff" stroke="#1a73e8" stroke-width="1.5"/>
+<text x="714" y="364" font-size="14" fill="#0f172a" font-weight="700">読み込み時</text>
+<text x="714" y="386" font-size="12" fill="#334155">先頭の鍵IDで DEK を選び復号</text>
+<text x="714" y="404" font-size="11" fill="#475569">古い鍵（A・B）のデータも</text>
+<text x="714" y="422" font-size="11" fill="#475569">そのまま復号できる</text>
+<rect x="714" y="436" width="190" height="24" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5"/>
+<text x="809" y="452" font-size="11.5" fill="#15803d" font-weight="700" text-anchor="middle">KMS 呼び出しなし</text>
+<line x1="438" y1="200" x2="343" y2="200" stroke="#188038" stroke-width="2" marker-end="url(#arwG)"/>
+<line x1="343" y1="262" x2="438" y2="262" stroke="#188038" stroke-width="2" marker-end="url(#arwG)" stroke-dasharray="6 4"/>
+<circle cx="390" cy="182" r="11" fill="#188038"/>
+<text x="390" y="187" font-size="13" fill="#fff" font-weight="700" text-anchor="middle">2</text>
+<text x="390" y="222" font-size="11" fill="#0d652d" font-weight="700" text-anchor="middle">復号を依頼</text>
+<rect x="350" y="228" width="80" height="20" rx="10" fill="#fee2e2" stroke="#dc2626" stroke-width="1"/>
+<text x="390" y="242" font-size="10.5" fill="#b91c1c" font-weight="700" text-anchor="middle">起動時に1回</text>
+<text x="390" y="280" font-size="10.5" fill="#0d652d" font-weight="700" text-anchor="middle">平文キーセット</text>
+<line x1="343" y1="430" x2="438" y2="430" stroke="#b45309" stroke-width="2" marker-end="url(#arwO)"/>
+<circle cx="390" cy="412" r="11" fill="#b45309"/>
+<text x="390" y="417" font-size="13" fill="#fff" font-weight="700" text-anchor="middle">1</text>
+<text x="390" y="450" font-size="10.5" fill="#92400e" font-weight="700" text-anchor="middle">起動時に</text>
+<text x="390" y="464" font-size="10.5" fill="#92400e" font-weight="700" text-anchor="middle">読み込み</text>
+<rect x="1040" y="130" width="330" height="360" rx="14" fill="#f1f5f9" stroke="#475569" stroke-width="2"/>
+<text x="1060" y="160" font-size="16" fill="#1e293b" font-weight="700">データベース</text>
+<text x="1060" y="180" font-size="12" fill="#64748b">Cloud SQL / Spanner / Firestore など</text>
+<rect x="1060" y="196" width="290" height="28" rx="4" fill="#ffffff" stroke="#cbd5e1" stroke-width="1"/>
+<text x="1072" y="214" font-size="11" fill="#64748b">id=101</text>
+<rect x="1128" y="200" width="62" height="20" rx="3" fill="#e2e8f0" stroke="#64748b" stroke-width="1"/>
+<text x="1159" y="214" font-size="11" fill="#334155" font-weight="700" text-anchor="middle">鍵A</text>
+<rect x="1194" y="200" width="146" height="20" rx="3" fill="#cbd5e1" stroke="#94a3b8" stroke-width="1"/>
+<text x="1267" y="214" font-size="11" fill="#1e293b" font-weight="700" text-anchor="middle">暗号データ</text>
+<rect x="1060" y="230" width="290" height="28" rx="4" fill="#ffffff" stroke="#cbd5e1" stroke-width="1"/>
+<text x="1072" y="248" font-size="11" fill="#64748b">id=102</text>
+<rect x="1128" y="234" width="62" height="20" rx="3" fill="#e2e8f0" stroke="#64748b" stroke-width="1"/>
+<text x="1159" y="248" font-size="11" fill="#334155" font-weight="700" text-anchor="middle">鍵A</text>
+<rect x="1194" y="234" width="146" height="20" rx="3" fill="#cbd5e1" stroke="#94a3b8" stroke-width="1"/>
+<text x="1267" y="248" font-size="11" fill="#1e293b" font-weight="700" text-anchor="middle">暗号データ</text>
+<rect x="1060" y="264" width="290" height="28" rx="4" fill="#ffffff" stroke="#cbd5e1" stroke-width="1"/>
+<text x="1072" y="282" font-size="11" fill="#64748b">id=103</text>
+<rect x="1128" y="268" width="62" height="20" rx="3" fill="#dbeafe" stroke="#3b82f6" stroke-width="1"/>
+<text x="1159" y="282" font-size="11" fill="#1e3a8a" font-weight="700" text-anchor="middle">鍵B</text>
+<rect x="1194" y="268" width="146" height="20" rx="3" fill="#cbd5e1" stroke="#94a3b8" stroke-width="1"/>
+<text x="1267" y="282" font-size="11" fill="#1e293b" font-weight="700" text-anchor="middle">暗号データ</text>
+<rect x="1060" y="298" width="290" height="28" rx="4" fill="#ffffff" stroke="#cbd5e1" stroke-width="1"/>
+<text x="1072" y="316" font-size="11" fill="#64748b">id=104</text>
+<rect x="1128" y="302" width="62" height="20" rx="3" fill="#fef3c7" stroke="#d97706" stroke-width="1"/>
+<text x="1159" y="316" font-size="11" fill="#78350f" font-weight="700" text-anchor="middle">鍵C</text>
+<rect x="1194" y="302" width="146" height="20" rx="3" fill="#cbd5e1" stroke="#94a3b8" stroke-width="1"/>
+<text x="1267" y="316" font-size="11" fill="#1e293b" font-weight="700" text-anchor="middle">暗号データ</text>
+<rect x="1060" y="332" width="290" height="28" rx="4" fill="#ffffff" stroke="#cbd5e1" stroke-width="1"/>
+<text x="1072" y="350" font-size="11" fill="#64748b">id=105</text>
+<rect x="1128" y="336" width="62" height="20" rx="3" fill="#fef3c7" stroke="#d97706" stroke-width="1"/>
+<text x="1159" y="350" font-size="11" fill="#78350f" font-weight="700" text-anchor="middle">鍵C</text>
+<rect x="1194" y="336" width="146" height="20" rx="3" fill="#cbd5e1" stroke="#94a3b8" stroke-width="1"/>
+<text x="1267" y="350" font-size="11" fill="#1e293b" font-weight="700" text-anchor="middle">暗号データ</text>
+<text x="1060" y="386" font-size="11.5" fill="#1e293b" font-weight="700">暗号文の形式（Tink 標準テンプレート）</text>
+<rect x="1062" y="396" width="40" height="24" rx="2" fill="#e2e8f0" stroke="#64748b" stroke-width="1"/>
+<text x="1082.0" y="413" font-size="10.5" fill="#1e293b" font-weight="700" text-anchor="middle">0x01</text>
+<rect x="1102" y="396" width="62" height="24" rx="2" fill="#fef3c7" stroke="#64748b" stroke-width="1"/>
+<text x="1133.0" y="413" font-size="10.5" fill="#1e293b" font-weight="700" text-anchor="middle">鍵ID 4B</text>
+<rect x="1164" y="396" width="34" height="24" rx="2" fill="#e2e8f0" stroke="#64748b" stroke-width="1"/>
+<text x="1181.0" y="413" font-size="10.5" fill="#1e293b" font-weight="700" text-anchor="middle">IV</text>
+<rect x="1198" y="396" width="104" height="24" rx="2" fill="#cbd5e1" stroke="#64748b" stroke-width="1"/>
+<text x="1250.0" y="413" font-size="10.5" fill="#1e293b" font-weight="700" text-anchor="middle">暗号化データ</text>
+<rect x="1302" y="396" width="48" height="24" rx="2" fill="#e2e8f0" stroke="#64748b" stroke-width="1"/>
+<text x="1326.0" y="413" font-size="10.5" fill="#1e293b" font-weight="700" text-anchor="middle">タグ</text>
+<text x="1060" y="442" font-size="11" fill="#475569">・鍵IDで「どの鍵のデータか」を</text>
+<text x="1072" y="458" font-size="11" fill="#475569">復号せずに集計できる</text>
+<text x="1060" y="476" font-size="11" fill="#475569">・鍵が増えても復号速度は変わらない</text>
+<line x1="942" y1="385" x2="1038" y2="385" stroke="#1a73e8" stroke-width="2" marker-end="url(#arwB)"/>
+<line x1="1038" y1="435" x2="942" y2="435" stroke="#1a73e8" stroke-width="2" marker-end="url(#arwB)" stroke-dasharray="6 4"/>
+<circle cx="990" cy="366" r="11" fill="#1a73e8"/>
+<text x="990" y="371" font-size="13" fill="#fff" font-weight="700" text-anchor="middle">3</text>
+<text x="990" y="406" font-size="10.5" fill="#174ea6" font-weight="700" text-anchor="middle">暗号文を保存</text>
+<text x="990" y="456" font-size="10.5" fill="#174ea6" font-weight="700" text-anchor="middle">暗号文を読込</text>
+<rect x="30" y="514" width="6" height="22" rx="2" fill="#d97706"/>
+<text x="46" y="532" font-size="19" fill="#0f172a" font-weight="700">鍵のローテーション</text>
+<rect x="30" y="548" width="860" height="322" rx="14" fill="#fffdf7" stroke="#d97706" stroke-width="2"/>
+<text x="50" y="576" font-size="15.5" fill="#92400e" font-weight="700">DEK のローテーション（キーセット内・Tink が管理）</text>
+<text x="50" y="596" font-size="11.5" fill="#78350f">目安：年1回〜90日ごと、または暗号化回数（AES-GCM は1鍵あたり約 2³² 回）が上限に近づく前／漏洩疑い時は即時</text>
+<rect x="50" y="610" width="182" height="164" rx="10" fill="#ffffff" stroke="#e5c58a" stroke-width="1.2"/>
+<text x="141.0" y="631" font-size="12.5" fill="#0f172a" font-weight="700" text-anchor="middle">初期状態</text>
+<text x="141.0" y="648" font-size="10.5" fill="#64748b" text-anchor="middle">キーセット作成</text>
+<rect x="62" y="672" width="158" height="26" rx="5" fill="#e2e8f0" stroke="#16a34a" stroke-width="2.5"/>
+<text x="72" y="689.5" font-size="12" fill="#15803d" font-weight="700">鍵A　★主鍵</text>
+<line x1="236" y1="692" x2="262" y2="692" stroke="#b45309" stroke-width="2" marker-end="url(#arwO)"/>
+<rect x="266" y="610" width="182" height="164" rx="10" fill="#ffffff" stroke="#e5c58a" stroke-width="1.2"/>
+<text x="357.0" y="631" font-size="12.5" fill="#0f172a" font-weight="700" text-anchor="middle">手順1：鍵を追加</text>
+<text x="357.0" y="648" font-size="10.5" fill="#64748b" text-anchor="middle">主鍵にせず、キーセットを</text>
+<text x="357.0" y="662" font-size="10.5" fill="#64748b" text-anchor="middle">使う全インスタンスに配布</text>
+<rect x="278" y="672" width="158" height="26" rx="5" fill="#e2e8f0" stroke="#16a34a" stroke-width="2.5"/>
+<text x="288" y="689.5" font-size="12" fill="#15803d" font-weight="700">鍵A　★主鍵</text>
+<rect x="278" y="704" width="158" height="26" rx="5" fill="#dbeafe" stroke="#3b82f6" stroke-width="1.2"/>
+<text x="288" y="721.5" font-size="12" fill="#1e3a8a" font-weight="700">鍵B</text>
+<line x1="452" y1="692" x2="478" y2="692" stroke="#b45309" stroke-width="2" marker-end="url(#arwO)"/>
+<rect x="482" y="610" width="182" height="164" rx="10" fill="#ffffff" stroke="#e5c58a" stroke-width="1.2"/>
+<text x="573.0" y="631" font-size="12.5" fill="#0f172a" font-weight="700" text-anchor="middle">手順2：主鍵に昇格</text>
+<text x="573.0" y="648" font-size="10.5" fill="#64748b" text-anchor="middle">全インスタンスへの</text>
+<text x="573.0" y="662" font-size="10.5" fill="#64748b" text-anchor="middle">反映を確認後</text>
+<rect x="494" y="672" width="158" height="26" rx="5" fill="#e2e8f0" stroke="#64748b" stroke-width="1.2"/>
+<text x="504" y="689.5" font-size="12" fill="#334155" font-weight="700">鍵A</text>
+<rect x="494" y="704" width="158" height="26" rx="5" fill="#dbeafe" stroke="#16a34a" stroke-width="2.5"/>
+<text x="504" y="721.5" font-size="12" fill="#15803d" font-weight="700">鍵B　★主鍵</text>
+<line x1="668" y1="692" x2="694" y2="692" stroke="#b45309" stroke-width="2" marker-end="url(#arwO)"/>
+<rect x="698" y="610" width="182" height="164" rx="10" fill="#ffffff" stroke="#e5c58a" stroke-width="1.2"/>
+<text x="789.0" y="631" font-size="12.5" fill="#0f172a" font-weight="700" text-anchor="middle">次回ローテーション</text>
+<text x="789.0" y="648" font-size="10.5" fill="#64748b" text-anchor="middle">同じ手順を繰り返す</text>
+<rect x="710" y="672" width="158" height="26" rx="5" fill="#e2e8f0" stroke="#64748b" stroke-width="1.2"/>
+<text x="720" y="689.5" font-size="12" fill="#334155" font-weight="700">鍵A</text>
+<rect x="710" y="704" width="158" height="26" rx="5" fill="#dbeafe" stroke="#3b82f6" stroke-width="1.2"/>
+<text x="720" y="721.5" font-size="12" fill="#1e3a8a" font-weight="700">鍵B</text>
+<rect x="710" y="736" width="158" height="26" rx="5" fill="#fef3c7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="720" y="753.5" font-size="12" fill="#15803d" font-weight="700">鍵C　★主鍵</text>
+<text x="50" y="798" font-size="11.5" fill="#334155">✔ 古い鍵は ENABLED のまま残して過去データの復号に使う　✔ 既存データの再暗号化は不要　✔ 鍵が少しずつ増える運用で問題なし（年1回なら10年で約10本）</text>
+<text x="50" y="820" font-size="11.5" fill="#b91c1c">✘ 固定数の鍵を巡回させない（一度主鍵でなくなった鍵は主鍵に戻さない）　　※ 反映にはアプリの再起動または定期再読み込みが必要</text>
+<text x="50" y="842" font-size="11.5" fill="#475569">※ 同じキーセットを複数のインスタンスやアプリが使う場合の手順。1インスタンスだけなら手順1と2は同時に行ってよい</text>
+<rect x="910" y="548" width="460" height="322" rx="14" fill="#f3fbf5" stroke="#188038" stroke-width="2"/>
+<text x="930" y="576" font-size="15.5" fill="#0d652d" font-weight="700">KEK のローテーション（Cloud KMS が管理）</text>
+<text x="930" y="596" font-size="11.5" fill="#137333">DB のデータには触れない・ほぼ無料で監査要件にも対応</text>
+<rect x="930" y="612" width="420" height="66" rx="8" fill="#ffffff" stroke="#9fd3ae" stroke-width="1.2"/>
+<circle cx="952" cy="634" r="11" fill="#188038"/>
+<text x="952" y="639" font-size="13" fill="#fff" font-weight="700" text-anchor="middle">1</text>
+<text x="972" y="639" font-size="13" fill="#0f172a" font-weight="700">Cloud KMS の自動ローテーション</text>
+<text x="972" y="656" font-size="11" fill="#475569">新しい鍵バージョン v2 が主バージョンになる</text>
+<text x="972" y="670" font-size="10.5" fill="#64748b">（v1 は自動では無効化・破棄されない）</text>
+<rect x="930" y="682" width="420" height="66" rx="8" fill="#ffffff" stroke="#9fd3ae" stroke-width="1.2"/>
+<circle cx="952" cy="704" r="11" fill="#188038"/>
+<text x="952" y="709" font-size="13" fill="#fff" font-weight="700" text-anchor="middle">2</text>
+<text x="972" y="709" font-size="13" fill="#0f172a" font-weight="700">キーセットを v2 で暗号化し直す</text>
+<text x="972" y="726" font-size="11" fill="#475569">定期ジョブで読み込み → 再暗号化 → 保存</text>
+<text x="972" y="740" font-size="10.5" fill="#64748b">（ローテーションだけでは更新されない）</text>
+<rect x="930" y="752" width="420" height="66" rx="8" fill="#ffffff" stroke="#9fd3ae" stroke-width="1.2"/>
+<circle cx="952" cy="774" r="11" fill="#188038"/>
+<text x="952" y="779" font-size="13" fill="#fff" font-weight="700" text-anchor="middle">3</text>
+<text x="972" y="779" font-size="13" fill="#0f172a" font-weight="700">旧バージョン v1 を片付け</text>
+<text x="972" y="796" font-size="11" fill="#475569">全キーセットの更新を確認 → 無効化</text>
+<text x="972" y="810" font-size="10.5" fill="#64748b">→ 十分な期間をおいて破棄（猶予はデフォルト30日）</text>
+<rect x="30" y="886" width="6" height="22" rx="2" fill="#7c3aed"/>
+<text x="46" y="904" font-size="19" fill="#0f172a" font-weight="700">なぜ Tink を使うのか</text>
+<rect x="30" y="920" width="440" height="150" rx="12" fill="#f5f3ff" stroke="#7c3aed" stroke-width="1.5"/>
+<circle cx="58" cy="949" r="14" fill="#7c3aed"/>
+<text x="58" y="954" font-size="14" fill="#fff" font-weight="700" text-anchor="middle">1</text>
+<text x="82" y="955" font-size="16" fill="#4c1d95" font-weight="700">暗号を誤用しにくい</text>
+<text x="50" y="988" font-size="12.5" fill="#334155">・IV の生成やアルゴリズムの細かい設定、</text>
+<text x="50" y="1010" font-size="12.5" fill="#334155">　暗号文の形式は Tink が担当</text>
+<text x="50" y="1032" font-size="12.5" fill="#334155">・安全な既定値（AES-256-GCM など）を選ぶだけ</text>
+<text x="50" y="1054" font-size="12.5" fill="#334155">・自前実装で起きやすいミスを防げる</text>
+<rect x="480" y="920" width="440" height="150" rx="12" fill="#f5f3ff" stroke="#7c3aed" stroke-width="1.5"/>
+<circle cx="508" cy="949" r="14" fill="#7c3aed"/>
+<text x="508" y="954" font-size="14" fill="#fff" font-weight="700" text-anchor="middle">2</text>
+<text x="532" y="955" font-size="16" fill="#4c1d95" font-weight="700">ローテーションの仕組みが組み込み済み</text>
+<text x="500" y="988" font-size="12.5" fill="#334155">・キーセットが鍵の束・主鍵・鍵の状態を管理</text>
+<text x="500" y="1010" font-size="12.5" fill="#334155">・暗号文先頭の鍵IDで、復号時に正しい鍵を自動選択</text>
+<text x="500" y="1032" font-size="12.5" fill="#334155">・「鍵を追加 → 主鍵に昇格」するだけ</text>
+<text x="500" y="1054" font-size="12.5" fill="#334155">　既存データの再暗号化は不要</text>
+<rect x="930" y="920" width="440" height="150" rx="12" fill="#f5f3ff" stroke="#7c3aed" stroke-width="1.5"/>
+<circle cx="958" cy="949" r="14" fill="#7c3aed"/>
+<text x="958" y="954" font-size="14" fill="#fff" font-weight="700" text-anchor="middle">3</text>
+<text x="982" y="955" font-size="16" fill="#4c1d95" font-weight="700">Cloud KMS に公式対応</text>
+<text x="950" y="988" font-size="12.5" fill="#334155">・Cloud KMS 用の連携モジュールを公式に提供</text>
+<text x="950" y="1010" font-size="12.5" fill="#334155">・KMS の鍵を URI（gcp-kms://…）で指定するだけで</text>
+<text x="950" y="1032" font-size="12.5" fill="#334155">　キーセットを暗号化して保存・読み込み</text>
+<text x="950" y="1054" font-size="12.5" fill="#334155">・Tinkey も KMS 対応。作成〜ローテーションまで同じ仕組み</text>
+<rect x="30" y="1088" width="1340" height="58" rx="10" fill="#fef2f2" stroke="#dc2626" stroke-width="1.5"/>
+<text x="50" y="1113" font-size="14.5" fill="#b91c1c" font-weight="700">運用で最も重要なこと：キーセットと KEK を絶対に失わない</text>
+<text x="50" y="1134" font-size="11.5" fill="#7f1d1d">キーセットは全期間のデータを復号する唯一の手段。保存先の冗長化・バックアップ、更新手順のレビュー、KEK 鍵バージョンの破棄権限の厳格化を必ず行う。</text>
+</svg>
